@@ -1,4 +1,5 @@
 import psycopg
+import re
 
 
 def create_table():
@@ -74,7 +75,58 @@ def deleteStudent(student_id):
         conn.commit()
 
 
-# create_table()
-getAllStudents()
-deleteStudent(4)
-getAllStudents()
+def main():
+    try:
+        create_table()
+    except psycopg.errors.DuplicateTable:
+        print("table \'students\' already exists")
+
+    # main loop
+    while True:
+        choice = 0
+        # get user input
+        while True:
+            try:
+                print("""
+Options:
+    1. Add a student
+    2. Update a student's email
+    3. Delete a student
+                """)
+                choice = int(input("Pick an option 1-3 (inclusive): "))
+                if choice < 1 or choice > 3:
+                    print("Input a value 1-3 (inclusive)")
+                    continue
+                break
+            except ValueError:
+                print("Input a value 1-3 (inclusive)")
+
+        match choice:
+            case 1:
+                f_name = input("What is the student's first name? ")
+                l_name = input("What is the student's last name? ")
+                email = input("What is the student's email? ")
+
+                # pattern for a valid date
+                valid_date_pattern = re.compile(r'^\d{4}-\d{2}-\d{2}$')
+                while True:
+                    enrollment_date = input("What date did they enroll (YYYY-MM-DD)? ")
+                    if bool(valid_date_pattern.match(enrollment_date)):
+                        break
+                    else:
+                        print("Invalid format for date entered (YYYY-MM-DD)")
+
+                addStudent(f_name, l_name, email, enrollment_date)
+        #     case 2:
+        #         updateStudentEmail()
+        #     case 3:
+        #         deleteStudent()
+
+        cont = input("Do you want to continue? (y) ")
+        if cont[0].lower() != 'y':
+            print("Goodbye!")
+            break
+
+
+if __name__ == "__main__":
+    main()
