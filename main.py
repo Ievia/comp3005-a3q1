@@ -46,7 +46,8 @@ def addStudent(first_name, last_name, email, enrollment_date):
     with psycopg.connect("dbname=comp3005a3q1 user=postgres") as conn:
         with conn.cursor() as cur:
             cur.execute("""
-                insert into students (%s, %s, %s, %s)
+                insert into students (first_name, last_name, email, enrollment_date)
+                values (%s, %s, %s, %s)
             """, (first_name, last_name, email, enrollment_date))
 
         conn.commit()
@@ -92,6 +93,7 @@ Options:
     1. Add a student
     2. Update a student's email
     3. Delete a student
+    Enter any other number to quit
                 """)
                 choice = int(input("Pick an option 1-3 (inclusive): "))
                 if choice < 1 or choice > 3:
@@ -117,10 +119,35 @@ Options:
                         print("Invalid format for date entered (YYYY-MM-DD)")
 
                 addStudent(f_name, l_name, email, enrollment_date)
-        #     case 2:
-        #         updateStudentEmail()
-        #     case 3:
-        #         deleteStudent()
+            case 2:
+                while True:
+                    id_check = input("Enter the id of the student you wish to update: ")
+                    with psycopg.connect("dbname=comp3005a3q1 user=postgres") as conn:
+                        with conn.cursor() as cur:
+                            cur.execute("""
+                                select count(*) from students where student_id = %s
+                            """, (id_check, ))
+                            count = cur.fetchone()[0]
+                            if count == 1:
+                                break
+                            else:
+                                print("Student with that student id doesn't exist")
+                new_email = input("Enter the student's new email: ")
+                updateStudentEmail(id_check, new_email)
+            case 3:
+                id_check = input("Enter the id of the student you wish to delete: ")
+                while True:
+                    with psycopg.connect("dbname=comp3005a3q1 user=postgres") as conn:
+                        with conn.cursor() as cur:
+                            cur.execute("""
+                                    select count(*) from students where student_id = %s
+                                """, (id_check, ))
+                            count = cur.fetchone()[0]
+                            if count == 1:
+                                break
+                            else:
+                                print("Student with that student id doesn't exist")
+                deleteStudent(id_check)
 
         cont = input("Do you want to continue? (y) ")
         if cont[0].lower() != 'y':
