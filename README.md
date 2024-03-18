@@ -5,6 +5,10 @@ Video: https://youtu.be/Hypzvbgz1OA
 > Built in python 3.12 using Intellij IDEA
 > 
 > Depends on the "psycopg", "re" and "tabulate" python3 libraries
+> 
+> Which can all be installed with:
+> - pip install psycopg
+> - pip install tabulate
 
 > ### QUICK RUN GUIDE
 > 1. Create a database names "comp3005a3q1" in postgres, and make sure you have a user named "postgres" that doesn't
