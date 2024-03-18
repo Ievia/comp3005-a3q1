@@ -1,5 +1,7 @@
 # COMP 3005 A3 - Question 1
 
+Video: https://youtu.be/Hypzvbgz1OA
+
 > Built in python 3.12 using Intellij IDEA
 > 
 > Depends on the "psycopg", "re" and "tabulate" python3 libraries

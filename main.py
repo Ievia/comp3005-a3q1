@@ -93,7 +93,6 @@ def main():
 
     # main loop
     while True:
-        choice = 0
         # get user input
         while True:
             try:
@@ -148,8 +147,8 @@ Options:
                 new_email = input("Enter the student's new email: ")
                 updateStudentEmail(id_check, new_email)
             case 4:
-                id_check = input("Enter the id of the student you wish to delete: ")
                 while True:
+                    id_check = input("Enter the id of the student you wish to delete: ")
                     with psycopg.connect("dbname=comp3005a3q1 user=postgres") as conn:
                         with conn.cursor() as cur:
                             # checks if a student with the given id exists
